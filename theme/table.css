@@ -24,3 +24,29 @@
 	background-color: inherit;
 	color: inherit;
 }
+
+.ck .ck-table-size-choose-box-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 160px;
+	padding: 10px 10px 0 10px;
+}
+
+.ck .ck-table-size-choose-box {
+	width: 12px;
+	height: 11px;
+	margin: 1px;
+	border: 1px solid #aaa;
+
+	border-radius: 1px;
+
+	&.ck-on {
+		border-color: #5fa6ff;
+		background: #c9e9ff;
+	}
+}
+
+.ck .ck-table-size-label {
+	text-align: center;
+}
