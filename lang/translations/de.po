@@ -1,0 +1,78 @@
+# Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+msgid ""
+msgstr ""
+"Language: tr\n"
+"Language-Team: "
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgctxt "Label for the insert table toolbar button."
+msgid "Insert table"
+msgstr "Tabelle einfügen"
+
+msgctxt "Label for the set/unset table header column button."
+msgid "Header column"
+msgstr "Kopfspalte"
+
+msgctxt "Label for the insert table column before the current one button."
+msgid "Insert column before"
+msgstr "Spalte links einfügen"
+
+msgctxt "Label for the insert table column after the current one button."
+msgid "Insert column after"
+msgstr "Spalte rechts einfügen"
+
+msgctxt "Label for the delete table column button."
+msgid "Delete column"
+msgstr "Spalte löschen"
+
+msgctxt "Label for the table column dropdown button."
+msgid "Column"
+msgstr "Spalte"
+
+msgctxt "Label for the set/unset table header row button."
+msgid "Header row"
+msgstr "Kopfzeile"
+
+msgctxt "Label for the insert row below button."
+msgid "Insert row below"
+msgstr "Zeile unterhalb einfügen"
+
+msgctxt "Label for the insert row above button."
+msgid "Insert row above"
+msgstr "Zeile oberhalb einfügen"
+
+msgctxt "Label for the delete table row button."
+msgid "Delete row"
+msgstr "Zeile löschen"
+
+msgctxt "Label for the table row dropdown button."
+msgid "Row"
+msgstr "Zeile"
+
+msgctxt "Label for the merge table cell up button."
+msgid "Merge cell up"
+msgstr "Zelle oben verbinden"
+
+msgctxt "Label for the merge table cell right button."
+msgid "Merge cell right"
+msgstr "Zelle rechts verbinden"
+
+msgctxt "Label for the merge table cell down button."
+msgid "Merge cell down"
+msgstr "Celle unten verbinden"
+
+msgctxt "Label for the merge table cell left button."
+msgid "Merge cell left"
+msgstr "Zelle links verbinden"
+
+msgctxt "Label for the split table cell vertically button."
+msgid "Split cell vertically"
+msgstr "Zelle vertikal teilen"
+
+msgctxt "Label for the split table cell horizontally button."
+msgid "Split cell horizontally"
+msgstr "Zelle horizontal teilen"
+
+msgctxt "Label for the merge table cells button."
+msgid "Merge cells"
+msgstr "Zellen verbinden"
