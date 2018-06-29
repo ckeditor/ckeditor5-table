@@ -18,8 +18,8 @@ const tableSymbol = Symbol( 'isTable' );
  * * Calls the {@link module:widget/utils~toWidget} function with the proper element's label creator.
  *
  * @param {module:engine/view/element~Element} viewFigureElement
+ * @param {module:engine/view/element~Element} viewTableElement
  * @param {module:engine/view/writer~Writer} writer An instance of the view writer.
- * @param {String} label The element's label. It will be concatenated with the table `alt` attribute if one is present.
  * @returns {module:engine/view/element~Element}
  */
 export function toTableWidget( viewFigureElement, viewTableElement, writer ) {
