@@ -25,15 +25,15 @@ const tableSymbol = Symbol( 'isTable' );
 export function toTableWidget( viewFigureElement, viewTableElement, writer ) {
 	writer.setCustomProperty( tableSymbol, true, viewFigureElement );
 
-	const figureWidet = toWidget( viewFigureElement, writer, { hasSelectionHandler: true } );
+	const figureWidget = toWidget( viewFigureElement, writer, { hasSelectionHandler: true } );
 
 	// Due to a bug in Edge the `contenteditable=false` must be set on `<table>` element...
 	writer.setAttribute( 'contenteditable', 'false', viewTableElement );
 	// ...and the `<figure>` must have it set to `true` instead of removing `contenteditable` attribute.
 	// https://github.com/ckeditor/ckeditor5/issues/1067
-	writer.setAttribute( 'contenteditable', 'true', figureWidet );
+	writer.setAttribute( 'contenteditable', 'true', figureWidget );
 
-	return figureWidet;
+	return figureWidget;
 }
 
 /**
