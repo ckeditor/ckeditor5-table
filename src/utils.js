@@ -17,15 +17,23 @@ const tableSymbol = Symbol( 'isTable' );
  * * Adds a {@link module:engine/view/element~Element#_setCustomProperty custom property} allowing to recognize the table widget element.
  * * Calls the {@link module:widget/utils~toWidget} function with the proper element's label creator.
  *
- * @param {module:engine/view/element~Element} viewElement
+ * @param {module:engine/view/element~Element} viewFigureElement
  * @param {module:engine/view/writer~Writer} writer An instance of the view writer.
  * @param {String} label The element's label. It will be concatenated with the table `alt` attribute if one is present.
  * @returns {module:engine/view/element~Element}
  */
-export function toTableWidget( viewElement, writer ) {
-	writer.setCustomProperty( tableSymbol, true, viewElement );
+export function toTableWidget( viewFigureElement, viewTableElement, writer ) {
+	writer.setCustomProperty( tableSymbol, true, viewFigureElement );
 
-	return toWidget( viewElement, writer, { hasSelectionHandler: true } );
+	const figureWidet = toWidget( viewFigureElement, writer, { hasSelectionHandler: true } );
+
+	// Due to a bug in Edge the `contenteditable=false` must be set on `<table>` element...
+	writer.setAttribute( 'contenteditable', 'false', viewTableElement );
+	// ...and the `<figure>` must have it set to `true` instead of removing `contenteditable` attribute.
+	// https://github.com/ckeditor/ckeditor5/issues/1067
+	writer.setAttribute( 'contenteditable', 'true', figureWidet );
+
+	return figureWidet;
 }
 
 /**
