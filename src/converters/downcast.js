@@ -43,7 +43,7 @@ export function downcastInsertTable( options = {} ) {
 		let tableWidget;
 
 		if ( asWidget ) {
-			tableWidget = toTableWidget( figureElement, conversionApi.writer );
+			tableWidget = toTableWidget( figureElement, tableElement, conversionApi.writer );
 		}
 
 		const tableWalker = new TableWalker( table );
