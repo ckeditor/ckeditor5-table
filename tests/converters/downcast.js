@@ -280,16 +280,16 @@ describe( 'downcast converters', () => {
 			it( 'should create table as a widget', () => {
 				setModelData( model, modelTable( [ [ '' ] ] ) );
 
-				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.equal( formatTable(
+				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.match( new RegExp( formatTable(
 					'<figure class="ck-widget ck-widget_selectable table" contenteditable="false">' +
-					'<div class="ck ck-widget__selection-handler"></div>' +
+					'<div class="ck ck-widget__selection-handler"><svg[^>]+>.*</svg></div>' +
 						'<table>' +
 							'<tbody>' +
 								'<tr><td class="ck-editor__editable ck-editor__nested-editable" contenteditable="true"></td></tr>' +
 							'</tbody>' +
 						'</table>' +
 					'</figure>'
-				) );
+				) ) );
 			} );
 		} );
 	} );
@@ -532,9 +532,9 @@ describe( 'downcast converters', () => {
 					writer.insert( writer.createElement( 'tableCell' ), firstRow, 'end' );
 				} );
 
-				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.equal( formatTable(
+				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.match( new RegExp( formatTable(
 					'<figure class="ck-widget ck-widget_selectable table" contenteditable="false">' +
-						'<div class="ck ck-widget__selection-handler"></div>' +
+						'<div class="ck ck-widget__selection-handler"><svg[^>]+>.*</svg></div>' +
 						'<table>' +
 							'<tbody>' +
 								'<tr><td class="ck-editor__editable ck-editor__nested-editable" contenteditable="true">00</td></tr>' +
@@ -542,7 +542,7 @@ describe( 'downcast converters', () => {
 							'</tbody>' +
 						'</table>' +
 					'</figure>'
-				) );
+				) ) );
 			} );
 		} );
 	} );
@@ -694,9 +694,9 @@ describe( 'downcast converters', () => {
 					writer.insert( writer.createElement( 'tableCell' ), row, 'end' );
 				} );
 
-				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.equal( formatTable(
+				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.match( new RegExp( formatTable(
 					'<figure class="ck-widget ck-widget_selectable table" contenteditable="false">' +
-					'<div class="ck ck-widget__selection-handler"></div>' +
+					'<div class="ck ck-widget__selection-handler"><svg[^>]+>.*</svg></div>' +
 						'<table>' +
 							'<tbody>' +
 								'<tr>' +
@@ -706,7 +706,7 @@ describe( 'downcast converters', () => {
 							'</tbody>' +
 						'</table>' +
 					'</figure>'
-				) );
+				) ) );
 			} );
 		} );
 	} );
@@ -894,16 +894,16 @@ describe( 'downcast converters', () => {
 					writer.setAttribute( 'headingRows', 1, table );
 				} );
 
-				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.equal( formatTable(
+				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.match( new RegExp( formatTable(
 					'<figure class="ck-widget ck-widget_selectable table" contenteditable="false">' +
-					'<div class="ck ck-widget__selection-handler"></div>' +
+					'<div class="ck ck-widget__selection-handler"><svg[^>]+>.*</svg></div>' +
 						'<table>' +
 							'<thead>' +
 								'<tr><th class="ck-editor__editable ck-editor__nested-editable" contenteditable="true">00</th></tr>' +
 							'</thead>' +
 						'</table>' +
 					'</figure>'
-				) );
+				) ) );
 			} );
 		} );
 	} );
@@ -1129,16 +1129,16 @@ describe( 'downcast converters', () => {
 					writer.setAttribute( 'headingColumns', 1, table );
 				} );
 
-				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.equal( formatTable(
+				expect( formatTable( getViewData( viewDocument, { withoutSelection: true } ) ) ).to.match( new RegExp( formatTable(
 					'<figure class="ck-widget ck-widget_selectable table" contenteditable="false">' +
-					'<div class="ck ck-widget__selection-handler"></div>' +
+					'<div class="ck ck-widget__selection-handler"><svg[^>]+>.*</svg></div>' +
 						'<table>' +
 							'<tbody>' +
 								'<tr><th class="ck-editor__editable ck-editor__nested-editable" contenteditable="true">00</th></tr>' +
 							'</tbody>' +
 						'</table>' +
 					'</figure>'
-				) );
+				) ) );
 			} );
 		} );
 	} );
