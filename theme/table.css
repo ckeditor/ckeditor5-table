@@ -8,6 +8,10 @@
 	margin: 1em auto;
 	display: table;
 
+	/* By default table should be 100% width (overwrite Bootstrap 3 and 4 styles).
+	Also see: https://github.com/ckeditor/ckeditor5-table/issues/154. */
+	width: 100%;
+
 	& table {
 		/* The table cells should have slight borders */
 		border-collapse: collapse;
