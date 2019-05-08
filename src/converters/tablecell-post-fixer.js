@@ -127,6 +127,12 @@ function getElementsToCheck( view ) {
 // - p   : in other cases.
 function ensureProperElementName( currentViewElement, mapper, writer ) {
 	const modelParagraph = mapper.toModelElement( currentViewElement );
+
+	if ( !modelParagraph ) {
+		// This can happen if the paragraph changed attribute but also was removed (or one of its ancestor was removed).
+		return false;
+	}
+
 	const expectedViewElementName = getExpectedElementName( modelParagraph.parent, modelParagraph );
 
 	if ( currentViewElement.name !== expectedViewElementName ) {
