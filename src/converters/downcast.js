@@ -390,6 +390,13 @@ function createViewTableCellElement( tableWalkerValue, tableAttributes, insertPo
 
 	conversionApi.writer.insert( insertPosition, cellElement );
 
+	// Insert cell resizer UI.
+	// TODO (maybe): Only add the resizer to cells in the first row, then use CSS to render
+	// them the full table height.
+	const resizerElement = conversionApi.writer.createContainerElement( 'div', { class: 'ck-table-resizer' } );
+	const resizerInsertPosition = conversionApi.writer.createPositionAt( cellElement, 'end' );
+	conversionApi.writer.insert( resizerInsertPosition, resizerElement );
+
 	if ( isSingleParagraph && !hasAnyAttribute( firstChild ) ) {
 		const innerParagraph = tableCell.getChild( 0 );
 		const paragraphInsertPosition = conversionApi.writer.createPositionAt( cellElement, 'end' );

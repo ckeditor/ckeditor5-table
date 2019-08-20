@@ -173,7 +173,7 @@ export function defaultSchema( schema, registerParagraph = true ) {
 
 	schema.register( 'tableCell', {
 		allowIn: 'tableRow',
-		allowAttributes: [ 'colspan', 'rowspan' ],
+		allowAttributes: [ 'colspan', 'rowspan', 'style' ],
 		isLimit: true
 	} );
 

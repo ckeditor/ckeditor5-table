@@ -44,6 +44,23 @@ export function updateNumericAttribute( key, value, item, writer, defaultValue =
 }
 
 /**
+ * A common method to update the string value. If a value is the default one, it will be unset.
+ *
+ * @param {String} key Attribute key.
+ * @param {*} value The new attribute value.
+ * @param {module:engine/model/item~Item} item Model item on which the attribute will be set.
+ * @param {module:engine/model/writer~Writer} writer
+ * @param {*} defaultValue Default attribute value. If a value is lower or equal, it will be unset.
+ */
+export function updateStringAttribute( key, value, item, writer ) {
+	if ( value ) {
+		writer.setAttribute( key, value, item );
+	} else {
+		writer.removeAttribute( key, item );
+	}
+}
+
+/**
  * Common method to create empty table cell - it will create proper model structure as table cell must have at least one block inside.
  *
  * @param {module:engine/model/writer~Writer} writer Model writer.
@@ -52,6 +69,8 @@ export function updateNumericAttribute( key, value, item, writer, defaultValue =
  */
 export function createEmptyTableCell( writer, insertPosition, attributes = {} ) {
 	const tableCell = writer.createElement( 'tableCell', attributes );
+	const resizer = writer.createElement( 'resizer' );
+	writer.insert( resizer, tableCell );
 	writer.insertElement( 'paragraph', tableCell );
 	writer.insert( tableCell, insertPosition );
 }
