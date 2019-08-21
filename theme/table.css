@@ -23,6 +23,7 @@
 			min-width: 2em;
 			padding: .4em;
 			border-color: hsl(0, 0%, 85%);
+			word-wrap: anywhere;
 		}
 
 		& th {
