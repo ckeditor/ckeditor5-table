@@ -69,6 +69,8 @@ export default class ResizeColumnCommand extends Command {
 		let newColWidth;
 
 		[ ...table.getChildren() ].forEach( ( row, i ) => {
+			// Always grab the width from the top cell, so every cell in the column
+			// stays in sync as you resize.
 			if ( i === 0 ) {
 				const colwidth = parseInt( tableCell.getAttribute( 'colwidth' ) || 32 );
 				newColWidth = colwidth + resizeAmount;
