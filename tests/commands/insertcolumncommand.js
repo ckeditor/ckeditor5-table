@@ -49,7 +49,9 @@ describe( 'InsertColumnCommand', () => {
 		} );
 
 		describe( 'execute()', () => {
-			it( 'should insert column in given table to the right of the selection\'s column', () => {
+			it( 'should insert column in given table to the right of the selection\'s column (LTR content)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '11[]', '12' ],
 					[ '21', '22' ]
@@ -60,6 +62,22 @@ describe( 'InsertColumnCommand', () => {
 				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
 					[ '11[]', '', '12' ],
 					[ '21', '', '22' ]
+				] ) );
+			} );
+
+			it( 'should insert column in given table to the left of the selection\'s column (RTL content)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '11[]', '12' ],
+					[ '21', '22' ]
+				] ) );
+
+				command.execute();
+
+				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
+					[ '', '11[]', '12' ],
+					[ '', '21', '22' ]
 				] ) );
 			} );
 
@@ -173,7 +191,9 @@ describe( 'InsertColumnCommand', () => {
 		} );
 
 		describe( 'execute()', () => {
-			it( 'should insert column in given table to the left of the selection\'s column', () => {
+			it( 'should insert column in given table to the left of the selection\'s column (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '11', '12[]' ],
 					[ '21', '22' ]
@@ -184,6 +204,22 @@ describe( 'InsertColumnCommand', () => {
 				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
 					[ '11', '', '12[]' ],
 					[ '21', '', '22' ]
+				] ) );
+			} );
+
+			it( 'should insert column in given table to the right of the selection\'s column (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '11', '12[]' ],
+					[ '21', '22' ]
+				] ) );
+
+				command.execute();
+
+				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
+					[ '11', '12[]', '', ],
+					[ '21', '22', '' ]
 				] ) );
 			} );
 

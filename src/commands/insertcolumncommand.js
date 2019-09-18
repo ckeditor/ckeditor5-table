@@ -70,15 +70,35 @@ export default class InsertColumnCommand extends Command {
 		const editor = this.editor;
 		const selection = editor.model.document.selection;
 		const tableUtils = editor.plugins.get( 'TableUtils' );
+		const contentLanguageDirection = editor.locale.contentLanguageDirection;
 
 		const firstPosition = selection.getFirstPosition();
 
 		const tableCell = findAncestor( 'tableCell', firstPosition );
 		const table = tableCell.parent.parent;
 
-		const { column } = tableUtils.getCellLocation( tableCell );
-		const insertAt = this.order === 'right' ? column + 1 : column;
+		let { column } = tableUtils.getCellLocation( tableCell );
+		const isOrderRight = this.order === 'right';
+		const isContentLtr = contentLanguageDirection === 'ltr';
 
-		tableUtils.insertColumns( table, { columns: 1, at: insertAt } );
+		// In RTL content, the table is (visually) mirrored horizontally. Columns "before" are
+		// displayed on the right–side and vice–versa. So for the UI/UX to make sense, commands must
+		// work the other way around. It is confusing and it is easy to get it wrong.
+		//
+		//                              ┌──────────────────────────────┐
+		//                              │            order             │
+		//                              ├───────────────┰──────────────┤
+		//                              │    'right'    │    'left'    │
+		//          ┌───────────┰───────┼───────────────┼──────────────┤
+		//          │   content │ 'ltr' │   column+1    │    column    │
+		//          │  language │───────┼───────────────┼──────────────┤
+		//          │ direction │ 'rtl' │    column     │   column+1   │
+		//          └───────────┴───────┴───────────────┴──────────────┘
+		//
+		if ( ( isOrderRight && isContentLtr ) || ( !isOrderRight && !isContentLtr ) ) {
+			++column;
+		}
+
+		tableUtils.insertColumns( table, { columns: 1, at: column } );
 	}
 }
