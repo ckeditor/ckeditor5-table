@@ -38,9 +38,21 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'isEnabled', () => {
-			it( 'should be true if in cell that has sibling on the right', () => {
+			it( 'should be true if in cell that has sibling on the right (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '00[]', '01' ]
+				] ) );
+
+				expect( command.isEnabled ).to.be.true;
+			} );
+
+			it( 'should be true if in cell that has sibling on the left (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '00', '01[]' ]
 				] ) );
 
 				expect( command.isEnabled ).to.be.true;
@@ -96,12 +108,24 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'value', () => {
-			it( 'should be set to mergeable sibling if in cell that has sibling on the right', () => {
+			it( 'should be set to mergeable sibling if in cell that has sibling on the right (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '00[]', '01' ]
 				] ) );
 
 				expect( command.value ).to.equal( root.getNodeByPath( [ 0, 0, 1 ] ) );
+			} );
+
+			it( 'should be set to mergeable sibling if in cell that has sibling on the left (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '00', '01[]' ]
+				] ) );
+
+				expect( command.value ).to.equal( root.getNodeByPath( [ 0, 0, 0 ] ) );
 			} );
 
 			it( 'should be set to mergeable sibling if in cell that has sibling on the right (selection in block content)', () => {
@@ -144,9 +168,25 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'execute()', () => {
-			it( 'should merge table cells', () => {
+			it( 'should merge table cells (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '[]00', '01' ]
+				] ) );
+
+				command.execute();
+
+				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
+					[ { colspan: 2, contents: '<paragraph>[00</paragraph><paragraph>01]</paragraph>' } ]
+				] ) );
+			} );
+
+			it( 'should merge table cells (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '00', '[]01' ]
 				] ) );
 
 				command.execute();
@@ -218,9 +258,21 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'isEnabled', () => {
-			it( 'should be true if in cell that has sibling on the left', () => {
+			it( 'should be true if in cell that has sibling on the left (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '00', '01[]' ]
+				] ) );
+
+				expect( command.isEnabled ).to.be.true;
+			} );
+
+			it( 'should be true if in cell that has sibling on the right (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '00[]', '01' ]
 				] ) );
 
 				expect( command.isEnabled ).to.be.true;
@@ -276,12 +328,24 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'value', () => {
-			it( 'should be set to mergeable sibling if in cell that has sibling on the left', () => {
+			it( 'should be set to mergeable sibling if in cell that has sibling on the left (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '00', '01[]' ]
 				] ) );
 
 				expect( command.value ).to.equal( root.getNodeByPath( [ 0, 0, 0 ] ) );
+			} );
+
+			it( 'should be set to mergeable sibling if in cell that has sibling on the right (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '00[]', '01' ]
+				] ) );
+
+				expect( command.value ).to.equal( root.getNodeByPath( [ 0, 0, 1 ] ) );
 			} );
 
 			it( 'should be set to mergeable sibling if in cell that has sibling on the left (selection in block content)', () => {
@@ -324,9 +388,25 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'execute()', () => {
-			it( 'should merge table cells', () => {
+			it( 'should merge table cells (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
 				setData( model, modelTable( [
 					[ '00', '[]01' ]
+				] ) );
+
+				command.execute();
+
+				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
+					[ { colspan: 2, contents: '<paragraph>[00</paragraph><paragraph>01]</paragraph>' } ]
+				] ) );
+			} );
+
+			it( 'should merge table cells (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
+				setData( model, modelTable( [
+					[ '00[]', '01' ]
 				] ) );
 
 				command.execute();
@@ -398,7 +478,20 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'isEnabled', () => {
-			it( 'should be true if in cell that has mergeable cell in next row', () => {
+			it( 'should be true if in cell that has mergeable cell in next row (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
+				setData( model, modelTable( [
+					[ '00', '01[]' ],
+					[ '10', '11' ]
+				] ) );
+
+				expect( command.isEnabled ).to.be.true;
+			} );
+
+			it( 'should be true if in cell that has mergeable cell in next row (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
 				setData( model, modelTable( [
 					[ '00', '01[]' ],
 					[ '10', '11' ]
@@ -451,7 +544,20 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'value', () => {
-			it( 'should be set to mergeable cell', () => {
+			it( 'should be set to mergeable cell (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
+				setData( model, modelTable( [
+					[ '00', '01[]' ],
+					[ '10', '11' ]
+				] ) );
+
+				expect( command.value ).to.equal( root.getNodeByPath( [ 0, 1, 1 ] ) );
+			} );
+
+			it( 'should be set to mergeable cell (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
 				setData( model, modelTable( [
 					[ '00', '01[]' ],
 					[ '10', '11' ]
@@ -515,7 +621,25 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'execute()', () => {
-			it( 'should merge table cells', () => {
+			it( 'should merge table cells (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
+				setData( model, modelTable( [
+					[ '00', '01[]' ],
+					[ '10', '11' ]
+				] ) );
+
+				command.execute();
+
+				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
+					[ '00', { rowspan: 2, contents: '<paragraph>[01</paragraph><paragraph>11]</paragraph>' } ],
+					[ '10' ]
+				] ) );
+			} );
+
+			it( 'should merge table cells (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
 				setData( model, modelTable( [
 					[ '00', '01[]' ],
 					[ '10', '11' ]
@@ -633,7 +757,20 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'isEnabled', () => {
-			it( 'should be true if in cell that has mergeable cell in previous row', () => {
+			it( 'should be true if in cell that has mergeable cell in previous row (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
+				setData( model, modelTable( [
+					[ '00', '01' ],
+					[ '10', '11[]' ]
+				] ) );
+
+				expect( command.isEnabled ).to.be.true;
+			} );
+
+			it( 'should be true if in cell that has mergeable cell in previous row (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
 				setData( model, modelTable( [
 					[ '00', '01' ],
 					[ '10', '11[]' ]
@@ -686,7 +823,20 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'value', () => {
-			it( 'should be set to mergeable cell', () => {
+			it( 'should be set to mergeable cell (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
+				setData( model, modelTable( [
+					[ '00', '01' ],
+					[ '10', '11[]' ]
+				] ) );
+
+				expect( command.value ).to.equal( root.getNodeByPath( [ 0, 0, 1 ] ) );
+			} );
+
+			it( 'should be set to mergeable cell (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
 				setData( model, modelTable( [
 					[ '00', '01' ],
 					[ '10', '11[]' ]
@@ -751,7 +901,25 @@ describe( 'MergeCellCommand', () => {
 		} );
 
 		describe( 'execute()', () => {
-			it( 'should merge table cells', () => {
+			it( 'should merge table cells (LTR content direction)', () => {
+				editor.locale.contentLanguageDirection = 'ltr';
+
+				setData( model, modelTable( [
+					[ '00', '01' ],
+					[ '10', '[]11' ]
+				] ) );
+
+				command.execute();
+
+				expect( formatTable( getData( model ) ) ).to.equal( formattedModelTable( [
+					[ '00', { rowspan: 2, contents: '<paragraph>[01</paragraph><paragraph>11]</paragraph>' } ],
+					[ '10' ]
+				] ) );
+			} );
+
+			it( 'should merge table cells (RTL content direction)', () => {
+				editor.locale.contentLanguageDirection = 'rtl';
+
 				setData( model, modelTable( [
 					[ '00', '01' ],
 					[ '10', '[]11' ]

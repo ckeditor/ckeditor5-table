@@ -82,7 +82,7 @@ export default class MergeCellCommand extends Command {
 		const doc = model.document;
 		const tableCell = findAncestor( 'tableCell', doc.selection.getFirstPosition() );
 		const cellToMerge = this.value;
-		const direction = this.direction;
+		const direction = this._localizedDirection;
 
 		model.change( writer => {
 			const isMergeNext = direction == 'right' || direction == 'down';
@@ -127,11 +127,12 @@ export default class MergeCellCommand extends Command {
 		}
 
 		const tableUtils = this.editor.plugins.get( 'TableUtils' );
+		const direction = this._localizedDirection;
 
 		// First get the cell on proper direction.
 		const cellToMerge = this.isHorizontal ?
-			getHorizontalCell( tableCell, this.direction, tableUtils ) :
-			getVerticalCell( tableCell, this.direction );
+			getHorizontalCell( tableCell, direction, tableUtils ) :
+			getVerticalCell( tableCell, direction );
 
 		if ( !cellToMerge ) {
 			return;
@@ -146,6 +147,28 @@ export default class MergeCellCommand extends Command {
 		if ( cellToMergeSpan === span ) {
 			return cellToMerge;
 		}
+	}
+
+	/**
+	 * Returns {@link #direction} of the command considering editor {@link module:core/editor/editor~Editor#locale}.
+	 *
+	 * In RTL content, the table is (visually) mirrored horizontally. Cells logically "before" are displayed on the
+	 * right–side and vice–versa. So for the UI/UX to make sense, the command must work the other way around.
+	 *
+	 * @protected
+	 */
+	get _localizedDirection() {
+		let direction = this.direction;
+
+		if ( this.editor.locale.contentLanguageDirection == 'rtl' ) {
+			if ( direction === 'right' ) {
+				direction = 'left';
+			} else if ( direction === 'left' ) {
+				direction = 'right';
+			}
+		}
+
+		return direction;
 	}
 }
 

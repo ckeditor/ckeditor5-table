@@ -81,7 +81,7 @@ export default class InsertColumnCommand extends Command {
 		const isOrderRight = this.order === 'right';
 		const isContentLtr = contentLanguageDirection === 'ltr';
 
-		// In RTL content, the table is (visually) mirrored horizontally. Columns "before" are
+		// In RTL content, the table is (visually) mirrored horizontally. Columns logically "before" are
 		// displayed on the right–side and vice–versa. So for the UI/UX to make sense, commands must
 		// work the other way around. It is confusing and it is easy to get it wrong.
 		//
