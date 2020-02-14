@@ -15,19 +15,21 @@ import ContextualBalloon from '@ckeditor/ckeditor5-ui/src/panel/balloon/contextu
 import TableCellPropertiesView from './ui/tablecellpropertiesview';
 import tableCellProperties from './../../theme/icons/table-cell-properties.svg';
 import {
-	repositionContextualBalloon,
+	colorFieldValidator,
 	getBalloonCellPositionData,
 	getLocalizedColorErrorText,
 	getLocalizedLengthErrorText,
-	colorFieldValidator,
+	defaultColors,
 	lengthFieldValidator,
-	lineWidthFieldValidator
+	lineWidthFieldValidator,
+	repositionContextualBalloon
 } from '../ui/utils';
+import {
+	getLocalizedColorOptions,
+	normalizeColorOptions
+} from '@ckeditor/ckeditor5-ui/src/colorgrid/utils';
 import { debounce } from 'lodash-es';
 
-const DEFAULT_BORDER_STYLE = 'none';
-const DEFAULT_HORIZONTAL_ALIGNMENT = 'left';
-const DEFAULT_VERTICAL_ALIGNMENT = 'middle';
 const ERROR_TEXT_TIMEOUT = 500;
 
 /**
@@ -52,6 +54,18 @@ export default class TableCellPropertiesUI extends Plugin {
 	 */
 	static get pluginName() {
 		return 'TableCellPropertiesUI';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	constructor( editor ) {
+		super( editor );
+
+		editor.config.define( 'table.tableCellProperties', {
+			borderColors: defaultColors,
+			backgroundColors: defaultColors
+		} );
 	}
 
 	/**
@@ -121,7 +135,15 @@ export default class TableCellPropertiesUI extends Plugin {
 	_createPropertiesView() {
 		const editor = this.editor;
 		const viewDocument = editor.editing.view.document;
-		const view = new TableCellPropertiesView( editor.locale );
+		const config = editor.config.get( 'table.tableCellProperties' );
+		const borderColorsConfig = normalizeColorOptions( config.borderColors );
+		const localizedBorderColors = getLocalizedColorOptions( editor.locale, borderColorsConfig );
+		const backgroundColorsConfig = normalizeColorOptions( config.backgroundColors );
+		const localizedBackgroundColors = getLocalizedColorOptions( editor.locale, backgroundColorsConfig );
+		const view = new TableCellPropertiesView( editor.locale, {
+			borderColors: localizedBorderColors,
+			backgroundColors: localizedBackgroundColors
+		} );
 		const t = editor.t;
 
 		// Render the view so its #element is available for the clickOutsideHandler.
@@ -235,15 +257,15 @@ export default class TableCellPropertiesUI extends Plugin {
 		const commands = this.editor.commands;
 
 		this.view.set( {
-			borderStyle: commands.get( 'tableCellBorderStyle' ).value || DEFAULT_BORDER_STYLE,
+			borderStyle: commands.get( 'tableCellBorderStyle' ).value || '',
 			borderColor: commands.get( 'tableCellBorderColor' ).value || '',
 			borderWidth: commands.get( 'tableCellBorderWidth' ).value || '',
 			width: commands.get( 'tableCellWidth' ).value || '',
 			height: commands.get( 'tableCellHeight' ).value || '',
 			padding: commands.get( 'tableCellPadding' ).value || '',
 			backgroundColor: commands.get( 'tableCellBackgroundColor' ).value || '',
-			horizontalAlignment: commands.get( 'tableCellHorizontalAlignment' ).value || DEFAULT_HORIZONTAL_ALIGNMENT,
-			verticalAlignment: commands.get( 'tableCellVerticalAlignment' ).value || DEFAULT_VERTICAL_ALIGNMENT,
+			horizontalAlignment: commands.get( 'tableCellHorizontalAlignment' ).value || '',
+			verticalAlignment: commands.get( 'tableCellVerticalAlignment' ).value || ''
 		} );
 	}
 

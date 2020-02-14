@@ -15,18 +15,21 @@ import ContextualBalloon from '@ckeditor/ckeditor5-ui/src/panel/balloon/contextu
 import TablePropertiesView from './ui/tablepropertiesview';
 import tableProperties from './../../theme/icons/table-properties.svg';
 import {
-	repositionContextualBalloon,
+	colorFieldValidator,
 	getBalloonTablePositionData,
 	getLocalizedColorErrorText,
 	getLocalizedLengthErrorText,
-	colorFieldValidator,
 	lengthFieldValidator,
-	lineWidthFieldValidator
+	lineWidthFieldValidator,
+	repositionContextualBalloon,
+	defaultColors,
 } from '../ui/utils';
+import {
+	getLocalizedColorOptions,
+	normalizeColorOptions
+} from '@ckeditor/ckeditor5-ui/src/colorgrid/utils';
 import { debounce } from 'lodash-es';
 
-const DEFAULT_BORDER_STYLE = 'none';
-const DEFAULT_ALIGNMENT = '';
 const ERROR_TEXT_TIMEOUT = 500;
 
 /**
@@ -51,6 +54,18 @@ export default class TablePropertiesUI extends Plugin {
 	 */
 	static get pluginName() {
 		return 'TablePropertiesUI';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	constructor( editor ) {
+		super( editor );
+
+		editor.config.define( 'table.tableProperties', {
+			borderColors: defaultColors,
+			backgroundColors: defaultColors
+		} );
 	}
 
 	/**
@@ -120,7 +135,15 @@ export default class TablePropertiesUI extends Plugin {
 	_createPropertiesView() {
 		const editor = this.editor;
 		const viewDocument = editor.editing.view.document;
-		const view = new TablePropertiesView( editor.locale );
+		const config = editor.config.get( 'table.tableProperties' );
+		const borderColorsConfig = normalizeColorOptions( config.borderColors );
+		const localizedBorderColors = getLocalizedColorOptions( editor.locale, borderColorsConfig );
+		const backgroundColorsConfig = normalizeColorOptions( config.backgroundColors );
+		const localizedBackgroundColors = getLocalizedColorOptions( editor.locale, backgroundColorsConfig );
+		const view = new TablePropertiesView( editor.locale, {
+			borderColors: localizedBorderColors,
+			backgroundColors: localizedBackgroundColors
+		} );
 		const t = editor.t;
 
 		// Render the view so its #element is available for the clickOutsideHandler.
@@ -226,13 +249,13 @@ export default class TablePropertiesUI extends Plugin {
 		const commands = this.editor.commands;
 
 		this.view.set( {
-			borderStyle: commands.get( 'tableBorderStyle' ).value || DEFAULT_BORDER_STYLE,
+			borderStyle: commands.get( 'tableBorderStyle' ).value || '',
 			borderColor: commands.get( 'tableBorderColor' ).value || '',
 			borderWidth: commands.get( 'tableBorderWidth' ).value || '',
 			backgroundColor: commands.get( 'tableBackgroundColor' ).value || '',
 			width: commands.get( 'tableWidth' ).value || '',
 			height: commands.get( 'tableHeight' ).value || '',
-			alignment: commands.get( 'tableAlignment' ).value || DEFAULT_ALIGNMENT,
+			alignment: commands.get( 'tableAlignment' ).value || '',
 		} );
 	}
 
