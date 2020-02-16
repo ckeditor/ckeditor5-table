@@ -19,6 +19,9 @@ import {
 	downcastTableHeadingRowsChange
 } from './converters/downcast';
 
+import MouseMoveObserver from './observers/MouseMoveObserver';
+import MouseUpObserver from './observers/MouseUpObserver';
+
 import InsertTableCommand from './commands/inserttablecommand';
 import InsertRowCommand from './commands/insertrowcommand';
 import InsertColumnCommand from './commands/insertcolumncommand';
@@ -28,6 +31,7 @@ import RemoveRowCommand from './commands/removerowcommand';
 import RemoveColumnCommand from './commands/removecolumncommand';
 import SetHeaderRowCommand from './commands/setheaderrowcommand';
 import SetHeaderColumnCommand from './commands/setheadercolumncommand';
+import ResizeColumnCommand from './commands/resizecolumncommand';
 import { findAncestor } from './commands/utils';
 import TableUtils from '../src/tableutils';
 
@@ -58,6 +62,8 @@ export default class TableEditing extends Plugin {
 		const model = editor.model;
 		const schema = model.schema;
 		const conversion = editor.conversion;
+		const view = editor.editing.view;
+		const viewDocument = view.document;
 
 		schema.register( 'table', {
 			allowWhere: '$block',
@@ -74,7 +80,7 @@ export default class TableEditing extends Plugin {
 
 		schema.register( 'tableCell', {
 			allowIn: 'tableRow',
-			allowAttributes: [ 'colspan', 'rowspan' ],
+			allowAttributes: [ 'colspan', 'rowspan', 'style', 'colwidth' ],
 			isLimit: true
 		} );
 
@@ -111,6 +117,7 @@ export default class TableEditing extends Plugin {
 		// Table attributes conversion.
 		conversion.attributeToAttribute( { model: 'colspan', view: 'colspan' } );
 		conversion.attributeToAttribute( { model: 'rowspan', view: 'rowspan' } );
+		conversion.attributeToAttribute( { model: 'style', view: 'style' } );
 
 		// Table heading rows and cols conversion.
 		conversion.for( 'editingDowncast' ).add( downcastTableHeadingColumnsChange( { asWidget: true } ) );
@@ -139,6 +146,8 @@ export default class TableEditing extends Plugin {
 		editor.commands.add( 'setTableColumnHeader', new SetHeaderColumnCommand( editor ) );
 		editor.commands.add( 'setTableRowHeader', new SetHeaderRowCommand( editor ) );
 
+		editor.commands.add( 'resizeColumn', new ResizeColumnCommand( editor ) );
+
 		injectTableLayoutPostFixer( model );
 		injectTableCellRefreshPostFixer( model );
 		injectTableCellParagraphPostFixer( model );
@@ -147,6 +156,14 @@ export default class TableEditing extends Plugin {
 		this.editor.keystrokes.set( 'Tab', ( ...args ) => this._handleTabOnSelectedTable( ...args ), { priority: 'low' } );
 		this.editor.keystrokes.set( 'Tab', this._getTabHandler( true ), { priority: 'low' } );
 		this.editor.keystrokes.set( 'Shift+Tab', this._getTabHandler( false ), { priority: 'low' } );
+
+		// Add mousemove + mouseup DOM listeners.
+		view.addObserver( MouseMoveObserver );
+		view.addObserver( MouseUpObserver );
+
+		this.listenTo( viewDocument, 'mousedown', ( ...args ) => this._onMousedown( ...args ) );
+		this.listenTo( viewDocument, 'mousemove', ( ...args ) => this._onMousemove( ...args ) );
+		this.listenTo( viewDocument, 'mouseup', ( ...args ) => this._onMouseup( ...args ) );
 	}
 
 	/**
@@ -181,6 +198,63 @@ export default class TableEditing extends Plugin {
 				writer.setSelection( writer.createRangeIn( selectedElement.getChild( 0 ).getChild( 0 ) ) );
 			} );
 		}
+	}
+
+	/**
+	 * Handles {@link module:engine/view/document~Document#event:mousedown mousedown} events
+	 * when the table widget is selected
+	 *
+	 * @private
+	 * @param {module:utils/eventinfo~EventInfo} eventInfo
+	 * @param {module:engine/view/observer/domeventdata~DomEventData} domEventData
+	 */
+	_onMousedown( eventInfo, domEventData ) {
+		if ( !domEventData.domTarget.classList.contains( 'ck-table-resizer' ) ) {
+			return;
+		}
+
+		this._isResizing = true;
+		this._resizeStart = domEventData.domEvent.clientX;
+	}
+
+	/**
+	 * Handles {@link module:engine/view/document~Document#event:mousemove mousemove} events
+	 * when the table widget is selected
+	 *
+	 * @private
+	 * @param {module:utils/eventinfo~EventInfo} eventInfo
+	 * @param {module:engine/view/observer/domeventdata~DomEventData} domEventData
+	 */
+	_onMousemove( eventInfo, domEventData ) {
+		if ( !this._isResizing ) {
+			return;
+		}
+
+		const resizeEnd = domEventData.domEvent.clientX;
+		const diff = resizeEnd - this._resizeStart;
+
+		if ( !diff ) {
+			return;
+		}
+
+		this._resizeStart = resizeEnd;
+		this.editor.execute( 'resizeColumn', diff );
+	}
+
+	/**
+	 * Handles {@link module:engine/view/document~Document#event:mouseup mouseup} events
+	 * when the table widget is selected
+	 *
+	 * @private
+	 * @param {module:utils/eventinfo~EventInfo} eventInfo
+	 * @param {module:engine/view/observer/domeventdata~DomEventData} domEventData
+	 */
+	_onMouseup() {
+		if ( !this._isResizing ) {
+			return;
+		}
+
+		this._isResizing = false;
 	}
 
 	/**

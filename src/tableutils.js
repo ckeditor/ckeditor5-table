@@ -10,7 +10,7 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
 import TableWalker from './tablewalker';
-import { createEmptyTableCell, updateNumericAttribute } from './commands/utils';
+import { createEmptyTableCell, updateNumericAttribute, updateStringAttribute } from './commands/utils';
 
 /**
  * The table utilities plugin.
@@ -529,6 +529,24 @@ export default class TableUtils extends Plugin {
 					updateNumericAttribute( 'headingRows', headingRows + cellsToInsert, table, writer );
 				}
 			}
+		} );
+	}
+
+	/**
+		* @param { module: engine / model / element~Element } tableCell
+		* @param { Number } resizeAmount
+	*/
+	resizeColumn( tableCell, colWidth = 32 ) {
+		const model = this.editor.model;
+
+		model.change( writer => {
+			// Set data in attribute
+			const widthPx = Math.max( 32, colWidth );
+			updateNumericAttribute( 'colwidth', widthPx, tableCell, writer );
+
+			// Set inline style
+			const width = `${ widthPx }px`;
+			updateStringAttribute( 'style', { width }, tableCell, writer );
 		} );
 	}
 

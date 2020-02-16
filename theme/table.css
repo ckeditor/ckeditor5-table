@@ -24,14 +24,41 @@
 
 		& td,
 		& th {
+			position: relative;
 			min-width: 2em;
 			padding: .4em;
 			border-color: hsl(0, 0%, 85%);
+			word-wrap: anywhere;
 		}
 
 		& th {
 			font-weight: bold;
 			background: hsl(0, 0%, 98%);
+		}
+
+		& .ck-table-resizer {
+			position: absolute;
+			top: 0;
+			right: -8px;
+			height: 100%;
+			width: 16px;
+			cursor: ew-resize;
+			z-index: 1;
+
+			&::after {
+				position: absolute;
+				content: "";
+				top: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+				width: 0px;
+				height: 100%;
+			}
+
+			&:hover::after {
+				border-right: var(--ck-widget-outline-thickness) solid var(--ck-color-focus-border)
+			}
 		}
 	}
 }
