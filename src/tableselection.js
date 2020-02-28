@@ -72,6 +72,23 @@ export default class TableSelection extends Plugin {
 		 * @member {module:table/tableselection/mouseselectionhandler~MouseSelectionHandler}
 		 */
 		this._mouseHandler = new MouseSelectionHandler( this, this.editor.editing );
+		const model = editor.model;
+		const selection = model.document.selection;
+
+		editor.model.document.selection.on( 'change', () => {
+			const tableCells = Array.from( selection.getSelectedBlocks() )
+				.map( element => findAncestor( 'tableCell', model.createPositionAt( element, 0 ) ) )
+				.filter( tableCell => !!tableCell );
+
+			const size = tableCells.length;
+
+			if ( !this.hasMultiCellSelection && size ) {
+				// this is undo or external change to the selection so "fix" internal state.
+
+				this._startElement = tableCells[ 0 ];
+				this._endElement = tableCells[ tableCells.length - 1 ];
+			}
+		}, { priority: 'highest' } );
 
 		/**
 		 * A reference to the table utilities used across the class.
