@@ -160,20 +160,25 @@ describe( 'table selection', () => {
 
 		describe( 'on undo', () => {
 			beforeEach( async () => {
-				await setupEditor( [ UndoEditing ] );
+				await setupEditor( [ Input, UndoEditing ] );
 			} );
 
 			it( 'should clear contents of the selected table cells and put selection in last cell on backward delete', () => {
 				tableSelection.startSelectingFrom( modelRoot.getNodeByPath( [ 0, 0, 0 ] ) );
 				tableSelection.setSelectingTo( modelRoot.getNodeByPath( [ 0, 1, 1 ] ) );
 
-				model.change( writer => {
-					writer.setSelection( modelRoot.getNodeByPath( [ 0, 0, 0, 0 ] ), 0 );
-					model.insertContent( writer.createText( 'foobar' ) );
+				const node = modelRoot.getNodeByPath( [ 0, 0, 0, 0 ] );
+				editor.execute( 'input', {
+					text: 'foobar',
+					range: model.createRangeIn( modelRoot.getNodeByPath( [ 0, 0, 0, 0 ] ) ),
+					resultRange: model.createRange(
+						model.createPositionAt( node, 0 ),
+						model.createPositionAt( node, 0 )
+					)
 				} );
 
-				assertEqualMarkup( getModelData( model ), modelTable( [
-					[ 'foobar[]11', '12', '13' ],
+				assertEqualMarkup( getModelData( model, { withoutSelection: true } ), modelTable( [
+					[ 'foobar', '12', '13' ],
 					[ '21', '22', '23' ],
 					[ '31', '32', '33' ]
 				] ) );
