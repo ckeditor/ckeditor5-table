@@ -18,6 +18,7 @@ import ClassicTestEditor from '@ckeditor/ckeditor5-core/tests/_utils/classictest
 import { getCode } from '@ckeditor/ckeditor5-utils/src/keyboard';
 import Input from '@ckeditor/ckeditor5-typing/src/input';
 import ViewText from '@ckeditor/ckeditor5-engine/src/view/text';
+import UndoEditing from '@ckeditor/ckeditor5-undo/src/undoediting';
 
 describe( 'table selection', () => {
 	let editor, model, tableSelection, modelRoot, element, viewDocument;
@@ -145,6 +146,43 @@ describe( 'table selection', () => {
 				assertEqualMarkup( getModelData( model ), modelTable( [
 					[ 'x[]11', '12', '13' ],
 					[ '21', '22', '23' ],
+					[ '31', '32', '33' ]
+				] ) );
+			} );
+		} );
+	} );
+
+	describe( 'TableSelection - undo integration', () => {
+		afterEach( async () => {
+			element.remove();
+			await editor.destroy();
+		} );
+
+		describe( 'on undo', () => {
+			beforeEach( async () => {
+				await setupEditor( [ UndoEditing ] );
+			} );
+
+			it( 'should clear contents of the selected table cells and put selection in last cell on backward delete', () => {
+				tableSelection.startSelectingFrom( modelRoot.getNodeByPath( [ 0, 0, 0 ] ) );
+				tableSelection.setSelectingTo( modelRoot.getNodeByPath( [ 0, 1, 1 ] ) );
+
+				model.change( writer => {
+					writer.setSelection( modelRoot.getNodeByPath( [ 0, 0, 0, 0 ] ), 0 );
+					model.insertContent( writer.createText( 'foobar' ) );
+				} );
+
+				assertEqualMarkup( getModelData( model ), modelTable( [
+					[ 'foobar[]11', '12', '13' ],
+					[ '21', '22', '23' ],
+					[ '31', '32', '33' ]
+				] ) );
+
+				editor.execute( 'undo' );
+
+				assertEqualMarkup( getModelData( model ), modelTable( [
+					[ { contents: '11', isSelected: true }, { contents: '12', isSelected: true }, '13' ],
+					[ { contents: '21', isSelected: true }, { contents: '22', isSelected: true }, '23' ],
 					[ '31', '32', '33' ]
 				] ) );
 			} );
