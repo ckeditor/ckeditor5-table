@@ -72,23 +72,6 @@ export default class TableSelection extends Plugin {
 		 * @member {module:table/tableselection/mouseselectionhandler~MouseSelectionHandler}
 		 */
 		this._mouseHandler = new MouseSelectionHandler( this, this.editor.editing );
-		const model = editor.model;
-		const selection = model.document.selection;
-
-		editor.model.document.selection.on( 'change', () => {
-			const tableCells = Array.from( selection.getSelectedBlocks() )
-				.map( element => findAncestor( 'tableCell', model.createPositionAt( element, 0 ) ) )
-				.filter( tableCell => !!tableCell );
-
-			const size = tableCells.length;
-
-			if ( !this.hasMultiCellSelection && size ) {
-				// this is undo or external change to the selection so "fix" internal state.
-
-				this._startElement = tableCells[ 0 ];
-				this._endElement = tableCells[ tableCells.length - 1 ];
-			}
-		}, { priority: 'highest' } );
 
 		/**
 		 * A reference to the table utilities used across the class.
@@ -120,7 +103,7 @@ export default class TableSelection extends Plugin {
 
 		setupTableSelectionHighlighting( editor, this );
 
-		this.listenTo( selection, 'change:range', () => this._clearSelectionOnExternalChange( selection ) );
+		this.listenTo( selection, 'change:range', () => this._checkSelectionOnExternalChange(), { priority: 'highest' } );
 		this.listenTo( model, 'deleteContent', ( evt, args ) => this._handleDeleteContent( evt, args ), { priority: 'high' } );
 	}
 
@@ -312,14 +295,31 @@ export default class TableSelection extends Plugin {
 	}
 
 	/**
-	 * Checks if the selection has changed via an external change and if it is required to clear the internal state of the plugin.
+	 * Checks if the selection has changed via an external change and if it is required to update the internal state of the plugin.
 	 *
-	 * @param {module:engine/model/documentselection~DocumentSelection} selection
 	 * @private
 	 */
-	_clearSelectionOnExternalChange( selection ) {
+	_checkSelectionOnExternalChange() {
+		const model = this.editor.model;
+		const selection = model.document.selection;
+
 		if ( selection.rangeCount <= 1 && this.hasMultiCellSelection ) {
 			this.clearSelection();
+
+			return;
+		}
+
+		const tableCells = Array.from( selection.getSelectedBlocks() )
+			.map( element => findAncestor( 'tableCell', model.createPositionAt( element, 0 ) ) )
+			.filter( tableCell => !!tableCell );
+
+		const size = tableCells.length;
+
+		if ( !this.hasMultiCellSelection && size ) {
+			// this is undo or external change to the selection so "fix" internal state.
+
+			this._startElement = tableCells[ 0 ];
+			this._endElement = tableCells[ tableCells.length - 1 ];
 		}
 	}
 
