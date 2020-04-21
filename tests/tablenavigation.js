@@ -1779,6 +1779,46 @@ describe( 'TableNavigation', () => {
 							[ '20', '21', '22' ]
 						] ) );
 					} );
+
+					it( 'should expand selection to the beginning of the cell content', () => {
+						setModelData( model, modelTable( [
+							[ '00', '01', '02' ],
+							[ '10', '1[]1', '12' ],
+							[ '20', '21', '22' ]
+						] ) );
+
+						upArrowDomEvtDataStub.shiftKey = true;
+						editor.editing.view.document.fire( 'keydown', upArrowDomEvtDataStub );
+
+						sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
+						sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
+
+						assertEqualMarkup( getModelData( model ), modelTable( [
+							[ '00', '01', '02' ],
+							[ '10', '[1]1', '12' ],
+							[ '20', '21', '22' ]
+						] ) );
+					} );
+
+					it( 'should expand selection to the end of the cell content', () => {
+						setModelData( model, modelTable( [
+							[ '00', '01', '02' ],
+							[ '10', '1[]1', '12' ],
+							[ '20', '21', '22' ]
+						] ) );
+
+						downArrowDomEvtDataStub.shiftKey = true;
+						editor.editing.view.document.fire( 'keydown', downArrowDomEvtDataStub );
+
+						sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
+						sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
+
+						assertEqualMarkup( getModelData( model ), modelTable( [
+							[ '00', '01', '02' ],
+							[ '10', '1[1]', '12' ],
+							[ '20', '21', '22' ]
+						] ) );
+					} );
 				} );
 
 				describe( 'selection inside paragraph', () => {

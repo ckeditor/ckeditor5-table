@@ -16,6 +16,7 @@ import ModelRange from '@ckeditor/ckeditor5-engine/src/model/range';
 import TreeWalker from '@ckeditor/ckeditor5-engine/src/model/treewalker';
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 import priorities from '@ckeditor/ckeditor5-utils/src/priorities';
+import Selection from '@ckeditor/ckeditor5-engine/src/model/selection';
 
 /**
  * This plugin enables a keyboard navigation for tables.
@@ -163,7 +164,7 @@ export default class TableNavigation extends Plugin {
 		// Checks if the keys were handled and then prevents the default event behaviour and stops
 		// the propagation.
 		if ( isArrowKeyCode( keyCode ) ) {
-			wasHandled = this._handleArrowKeys( getDirectionFromKeyCode( keyCode, isLtrContent ) );
+			wasHandled = this._handleArrowKeys( getDirectionFromKeyCode( keyCode, isLtrContent ), domEventData.shiftKey );
 		}
 
 		if ( wasHandled ) {
@@ -178,9 +179,10 @@ export default class TableNavigation extends Plugin {
 	 *
 	 * @private
 	 * @param {'left'|'up'|'right'|'down'} direction The direction of the arrow key.
+	 * @param {Boolean} expandSelection If the current selection should be expanded.
 	 * @returns {Boolean|undefined} Returns `true` if key was handled.
 	 */
-	_handleArrowKeys( direction ) {
+	_handleArrowKeys( direction, expandSelection ) {
 		const model = this.editor.model;
 		const selection = model.document.selection;
 		const isForward = [ 'right', 'down' ].includes( direction );
@@ -246,7 +248,16 @@ export default class TableNavigation extends Plugin {
 		// of wrapped line (it's at the same time at the end of one line and at the start of the next line).
 		if ( this._isSingleLineRange( textRange, isForward ) ) {
 			model.change( writer => {
-				writer.setSelection( isForward ? cellRange.end : cellRange.start );
+				const newPosition = isForward ? cellRange.end : cellRange.start;
+
+				if ( expandSelection ) {
+					const newSelection = new Selection( selection.anchor );
+					newSelection.setFocus( newPosition );
+
+					writer.setSelection( newSelection );
+				} else {
+					writer.setSelection( newPosition );
+				}
 			} );
 
 			return true;
