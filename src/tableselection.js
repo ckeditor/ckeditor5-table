@@ -8,6 +8,7 @@
  */
 
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+import first from '@ckeditor/ckeditor5-utils/src/first';
 
 import TableWalker from './tablewalker';
 import TableUtils from './tableutils';
@@ -380,6 +381,32 @@ export default class TableSelection extends Plugin {
 				{ backward: cellsToSelect.backward }
 			);
 		} );
+	}
+
+	/**
+	 * Returns the focus cell from the current selection.
+	 *
+	 * @protected
+	 * @returns {module:engine/model/element~Element}
+	 */
+	_getFocusCell() {
+		const selection = this.editor.model.document.selection;
+		const focusCellRange = [ ...selection.getRanges() ].pop();
+
+		return focusCellRange.getContainedElement();
+	}
+
+	/**
+	 * Returns the anchor cell from the current selection.
+	 *
+	 * @protected
+	 * @returns {module:engine/model/element~Element} anchorCell
+	 */
+	_getAnchorCell() {
+		const selection = this.editor.model.document.selection;
+		const anchorCellRange = first( selection.getRanges() );
+
+		return anchorCellRange.getContainedElement();
 	}
 
 	/**
