@@ -9,8 +9,8 @@
 
 import TableSelection from './tableselection';
 import TableWalker from './tablewalker';
-import { getSelectedTableCells, getTableCellsContainingSelection } from './utils';
 import { findAncestor } from './commands/utils';
+import { getSelectedTableCells, getTableCellsContainingSelection } from './utils';
 
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Rect from '@ckeditor/ckeditor5-utils/src/dom/rect';
@@ -198,9 +198,8 @@ export default class TableNavigation extends Plugin {
 		const selectedCells = getSelectedTableCells( selection );
 
 		if ( selectedCells.length ) {
-			const tableSelection = this.editor.plugins.get( 'TableSelection' );
-
 			if ( expandSelection ) {
+				const tableSelection = this.editor.plugins.get( 'TableSelection' );
 				const focusCell = tableSelection._getFocusCell();
 				const anchorCell = tableSelection._getAnchorCell();
 
@@ -445,7 +444,8 @@ export default class TableNavigation extends Plugin {
 	 * Moves the selection from the given table cell in the specified direction.
 	 *
 	 * @private
-	 * @param {module:engine/model/element~Element} focusCell The table cell to start the selection navigation.
+	 * @param {module:engine/model/element~Element} anchorCell The table cell that is current multi-cell selection anchor.
+	 * @param {module:engine/model/element~Element} focusCell The table cell that is current multi-cell selection focus.
 	 * @param {'left'|'up'|'right'|'down'} direction Direction in which selection should move.
 	 * @param {Boolean} expandSelection If the current selection should be expanded.
 	 */

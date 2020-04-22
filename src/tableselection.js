@@ -452,39 +452,24 @@ export default class TableSelection extends Plugin {
 		const startColumn = Math.min( startLocation.column, endLocation.column );
 		const endColumn = Math.max( startLocation.column, endLocation.column );
 
-		const cells = [];
+		const selectionMap = new Array( endRow - startRow + 1 ).fill( null ).map( () => [] );
+		const flipVertically = endLocation.row < startLocation.row;
+		const flipHorizontally = endLocation.column < startLocation.column;
 
 		for ( const cellInfo of new TableWalker( findAncestor( 'table', anchorCell ), { startRow, endRow } ) ) {
 			if ( cellInfo.column >= startColumn && cellInfo.column <= endColumn ) {
-				cells.push( cellInfo.cell );
+				const row = flipVertically ? selectionMap.length - cellInfo.row - 1 + startRow : cellInfo.row - startRow;
+
+				if ( flipHorizontally ) {
+					selectionMap[ row ].unshift( cellInfo.cell );
+				} else {
+					selectionMap[ row ].push( cellInfo.cell );
+				}
 			}
 		}
 
-		// A selection started in the bottom right corner and finished in the upper left corner
-		// should have it ranges returned in the reverse order.
-		// However, this is only half of the story because the selection could be made to the left (then the left cell is a focus)
-		// or to the right (then the right cell is a focus), while being a forward selection in both cases
-		// (because it was made from top to bottom). This isn't handled.
-		// This method would need to be smarter, but the ROI is microscopic, so I skip this.
-		if ( checkIsBackward( startLocation, endLocation ) ) {
-			return { cells: cells.reverse(), backward: true };
-		}
-
-		return { cells, backward: false };
+		return { cells: selectionMap.flat(), backward: flipVertically || flipHorizontally };
 	}
-}
-
-// Naively check whether the selection should be backward or not. See the longer explanation where this function is used.
-function checkIsBackward( startLocation, endLocation ) {
-	if ( startLocation.row > endLocation.row ) {
-		return true;
-	}
-
-	if ( startLocation.row == endLocation.row && startLocation.column > endLocation.column ) {
-		return true;
-	}
-
-	return false;
 }
 
 function haveSameTableParent( cellA, cellB ) {
