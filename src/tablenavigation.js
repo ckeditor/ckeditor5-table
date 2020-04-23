@@ -14,7 +14,6 @@ import TableWalker from './tablewalker';
 import Rect from '@ckeditor/ckeditor5-utils/src/dom/rect';
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 import priorities from '@ckeditor/ckeditor5-utils/src/priorities';
-import Selection from '@ckeditor/ckeditor5-engine/src/model/selection';
 
 /**
  * This plugin enables keyboard navigation for tables.
@@ -248,7 +247,7 @@ export default class TableNavigation extends Plugin {
 				const newPosition = isForward ? cellRange.end : cellRange.start;
 
 				if ( expandSelection ) {
-					const newSelection = new Selection( selection.anchor );
+					const newSelection = model.createSelection( selection.anchor );
 					newSelection.setFocus( newPosition );
 
 					writer.setSelection( newSelection );
