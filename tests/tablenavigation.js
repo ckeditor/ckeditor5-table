@@ -2236,6 +2236,51 @@ describe( 'TableNavigation', () => {
 							[ '20', '21', '22' ]
 						] ) );
 					} );
+
+					describe( 'when shift key is pressed', () => {
+						beforeEach( () => {
+							upArrowDomEvtDataStub.shiftKey = true;
+							downArrowDomEvtDataStub.shiftKey = true;
+						} );
+
+						it( 'should expand selection to the beginning of the cell content', () => {
+							setModelData( model, modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', '<horizontalLine></horizontalLine><paragraph>foo[]bar</paragraph>', '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+
+							editor.editing.view.document.fire( 'keydown', upArrowDomEvtDataStub );
+
+							sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
+							sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
+
+							assertEqualMarkup( getModelData( model ), modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', '[<horizontalLine></horizontalLine><paragraph>foo]bar</paragraph>', '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+						} );
+
+						it( 'should expand selection to the end of the cell content', () => {
+							setModelData( model, modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', '<paragraph>foo[]bar</paragraph><horizontalLine></horizontalLine>', '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+
+							editor.editing.view.document.fire( 'keydown', downArrowDomEvtDataStub );
+
+							sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
+							sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
+
+							assertEqualMarkup( getModelData( model ), modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', '<paragraph>foo[bar</paragraph><horizontalLine></horizontalLine>]', '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+						} );
+					} );
 				} );
 
 				describe( 'contains image widget with caption and selection inside the caption', () => {
