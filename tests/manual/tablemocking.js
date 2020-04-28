@@ -5,20 +5,17 @@
 
 /* globals console, window, document */
 
-import Table from '../../src/table';
-import TableToolbar from '../../src/tabletoolbar';
 import { createTableAsciiArt, modelTable, prepareModelTableInput, prettyFormatModelTableInput } from '../_utils/utils';
 
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import { setData as setModelData } from '@ckeditor/ckeditor5-engine/src/dev-utils/model';
 
 import { diffString } from 'json-diff';
+import ArticlePluginSet from '@ckeditor/ckeditor5-core/tests/_utils/articlepluginset';
 
 ClassicEditor
 	.create( document.querySelector( '#editor' ), {
-		plugins: [ Essentials, Paragraph, Table, TableToolbar ],
+		plugins: [ ArticlePluginSet ],
 		toolbar: [
 			'insertTable', 'undo', 'redo'
 		],
