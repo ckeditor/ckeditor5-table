@@ -11,7 +11,7 @@
 		white-space: pre;
 		font-family: monospace;
 		display: block;
-		width: 500px;
+		width: 100%;
 		height: 100px;
 		box-sizing: border-box;
 		margin: 10px 0;
@@ -21,10 +21,13 @@
 		font-family: Menlo, Consolas, Lucida Console, Courier New, dejavu sans mono, monospace;
 	}
 	.diff-add {
-		color: hsl(120, 70%, 35%);
+		color: hsl( 120, 70%, 35% );
 	}
 	.diff-del {
-		color: hsl(0, 80%, 45%);
+		color: hsl( 0, 80%, 45% );
+	}
+	#input-status {
+		color: hsl( 0, 90%, 50% );
 	}
 </style>
 
@@ -39,9 +42,12 @@
 	[ '40', '41', '42', '43', '44' ]
 ]
 	</textarea>
+
 	<button type="button" id="clear-content">Clear editor</button>
 	<button type="button" id="set-model-data">↓ Set model data ↓</button>
 	<button type="button" id="get-model-data">↑ Get model data ↑</button>
+
+	<span id="input-status"></span>
 </div>
 
 <div id="editor">

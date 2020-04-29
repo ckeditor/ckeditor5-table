@@ -34,15 +34,17 @@ ClassicEditor
 		} );
 
 		document.getElementById( 'set-model-data' ).addEventListener( 'click', () => {
+			updateInputStatus();
+
 			const inputModelData = parseModelData( modelData.value );
 			setModelData( editor.model, inputModelData ? modelTable( inputModelData ) : '' );
 		} );
 
 		document.getElementById( 'get-model-data' ).addEventListener( 'click', () => {
-			const table = findTable( editor );
-			const data = prepareModelTableInput( table );
+			updateInputStatus();
 
-			modelData.value = prettyFormatModelTableInput( data );
+			const table = findTable( editor );
+			modelData.value = table ? prettyFormatModelTableInput( prepareModelTableInput( table ) ) : '';
 
 			updateAsciiAndDiff();
 		} );
@@ -94,7 +96,17 @@ ClassicEditor
 				.replace( /'/g, '"' )
 				.replace( /(?!")([a-z0-9$_]+)(?!")\s*:/gi, '"$1"' );
 
-			return JSON.parse( jsonString );
+			try {
+				return JSON.parse( jsonString );
+			} catch ( error ) {
+				updateInputStatus( error.message );
+			}
+
+			return null;
+		}
+
+		function updateInputStatus( message = '' ) {
+			document.getElementById( 'input-status' ).innerText = message;
 		}
 	} )
 	.catch( err => {
