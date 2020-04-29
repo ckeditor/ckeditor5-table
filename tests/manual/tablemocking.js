@@ -86,7 +86,15 @@ ClassicEditor
 		}
 
 		function parseModelData( string ) {
-			return eval( `(${ string.trim() || 'null' })` ); // eslint-disable-line no-eval
+			if ( !string.trim() ) {
+				return null;
+			}
+
+			const jsonString = string
+				.replace( /'/g, '"' )
+				.replace( /(?!")([a-z0-9$_]+)(?!")\s*:/gi, '"$1"' );
+
+			return JSON.parse( jsonString );
 		}
 	} )
 	.catch( err => {

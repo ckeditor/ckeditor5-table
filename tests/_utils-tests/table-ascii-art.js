@@ -58,7 +58,12 @@ describe( 'table ascii-art and model helpers', () => {
 			const modelDataString = prettyFormatModelTableInput( modelData );
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ '00' ]
+				]`
+			);
 		} );
 	} );
 
@@ -90,7 +95,12 @@ describe( 'table ascii-art and model helpers', () => {
 			const modelDataString = prettyFormatModelTableInput( modelData );
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ '00', '01' ]
+				]`
+			);
 		} );
 	} );
 
@@ -125,7 +135,13 @@ describe( 'table ascii-art and model helpers', () => {
 			const modelDataString = prettyFormatModelTableInput( modelData );
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ '00' ], 
+					[ '10' ]
+				]`
+			);
 		} );
 	} );
 
@@ -160,7 +176,13 @@ describe( 'table ascii-art and model helpers', () => {
 			const modelDataString = prettyFormatModelTableInput( modelData );
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ '00', '01' ],
+					[ '10', '11' ]
+				]`
+			);
 		} );
 	} );
 
@@ -201,7 +223,15 @@ describe( 'table ascii-art and model helpers', () => {
 			const modelDataString = prettyFormatModelTableInput( modelData );
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ { contents: '00', colspan: 2, rowspan: 2 }, { contents: '02', rowspan: 2 }, '03' ],
+					[ '13' ],
+					[ { contents: '20', colspan: 2 }, { contents: '22', colspan: 2, rowspan: 2 } ],
+					[ '30', '31' ]
+				]`
+			);
 		} );
 	} );
 
@@ -245,7 +275,16 @@ describe( 'table ascii-art and model helpers', () => {
 			const modelDataString = prettyFormatModelTableInput( modelData );
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ '00', { contents: '01', rowspan: 2 }, { contents: '02', rowspan: 3 }, { contents: '03', rowspan: 4 } ],
+					[ '10' ],
+					[ { contents: '20', colspan: 2 } ],
+					[ { contents: '30', colspan: 3 } ],
+					[ { contents: '40', colspan: 4 } ]
+				]`
+			);
 		} );
 	} );
 
@@ -285,11 +324,25 @@ describe( 'table ascii-art and model helpers', () => {
 			];
 
 			expect( modelData ).to.deep.equal( tableData );
-			expect( eval( `(${ modelDataString })` ) ).to.deep.equal( tableData ); // eslint-disable-line no-eval
+
+			assertSameCodeString( modelDataString,
+				`[
+					[ '00', '01' ],
+					[ '10', '11' ]
+				]`
+			);
 		} );
 	} );
 
 	function structuredClone( data ) {
 		return JSON.parse( JSON.stringify( data ) );
+	}
+
+	function assertSameCodeString( actual, expected ) {
+		expect( trimLines( actual ) ).to.equal( trimLines( expected ) );
+	}
+
+	function trimLines( string ) {
+		return string.replace( /^\s+|\s+$/gm, '' );
 	}
 } );
