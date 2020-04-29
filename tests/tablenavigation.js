@@ -1715,6 +1715,8 @@ describe( 'TableNavigation', () => {
 					) );
 					global.document.querySelector( 'head' ).appendChild( styleElement );
 
+					// The editing view must be focused because otherwise in Chrome the DOM selection will not contain
+					// any ranges and jumpOverUiElement will crash (for the right arrow when shift is pressed).
 					editor.editing.view.focus();
 				} );
 
