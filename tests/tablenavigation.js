@@ -1933,7 +1933,7 @@ describe( 'TableNavigation', () => {
 							sinon.assert.notCalled( downArrowDomEvtDataStub.stopPropagation );
 						} );
 
-						it( 'should expand selection to the beginning of the cell content', () => {
+						it( 'should expand collapsed selection to the beginning of the cell content', () => {
 							setModelData( model, modelTable( [
 								[ '00', '01', '02' ],
 								[ '10', 'word[] word' + text, '12' ],
@@ -1952,7 +1952,26 @@ describe( 'TableNavigation', () => {
 							] ) );
 						} );
 
-						it( 'should expand selection to the end of the cell content', () => {
+						it( 'should expand not collapsed selection to the beginning of the cell content from the selection anchor', () => {
+							setModelData( model, modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', 'word [word]' + text, '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+
+							editor.editing.view.document.fire( 'keydown', upArrowDomEvtDataStub );
+
+							sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
+							sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
+
+							assertEqualMarkup( getModelData( model ), modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', '[word ]word' + text, '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+						} );
+
+						it( 'should expand collapsed selection to the end of the cell content', () => {
 							setModelData( model, modelTable( [
 								[ '00', '01', '02' ],
 								[ '10', text + 'word[] word', '12' ],
@@ -1967,6 +1986,25 @@ describe( 'TableNavigation', () => {
 							assertEqualMarkup( getModelData( model ), modelTable( [
 								[ '00', '01', '02' ],
 								[ '10', text + 'word[ word]', '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+						} );
+
+						it( 'should expand not collapsed selection to the end of the cell content from the selection anchor', () => {
+							setModelData( model, modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', text + '[word] word', '12' ],
+								[ '20', '21', '22' ]
+							] ) );
+
+							editor.editing.view.document.fire( 'keydown', downArrowDomEvtDataStub );
+
+							sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
+							sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
+
+							assertEqualMarkup( getModelData( model ), modelTable( [
+								[ '00', '01', '02' ],
+								[ '10', text + '[word word]', '12' ],
 								[ '20', '21', '22' ]
 							] ) );
 						} );
