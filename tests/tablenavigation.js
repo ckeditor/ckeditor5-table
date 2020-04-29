@@ -2069,6 +2069,51 @@ describe( 'TableNavigation', () => {
 							sinon.assert.notCalled( downArrowDomEvtDataStub.preventDefault );
 							sinon.assert.notCalled( downArrowDomEvtDataStub.stopPropagation );
 						} );
+
+						describe( 'when shift key is pressed', () => {
+							beforeEach( () => {
+								upArrowDomEvtDataStub.shiftKey = true;
+								downArrowDomEvtDataStub.shiftKey = true;
+							} );
+
+							it( 'should expand collapsed selection to the end of the cell content', () => {
+								setModelData( model, modelTable( [
+									[ '00', '01', '02' ],
+									[ '10', text + '[] word word word', '12' ],
+									[ '20', '21', '22' ]
+								] ) );
+
+								editor.editing.view.document.fire( 'keydown', downArrowDomEvtDataStub );
+
+								sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
+								sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
+
+								assertEqualMarkup( getModelData( model ), modelTable( [
+									[ '00', '01', '02' ],
+									[ '10', text + '[ word word word]', '12' ],
+									[ '20', '21', '22' ]
+								] ) );
+							} );
+
+							it( 'should expand not collapsed selection to the end of the cell content from the selection anchor', () => {
+								setModelData( model, modelTable( [
+									[ '00', '01', '02' ],
+									[ '10', text + '[ word] word word', '12' ],
+									[ '20', '21', '22' ]
+								] ) );
+
+								editor.editing.view.document.fire( 'keydown', downArrowDomEvtDataStub );
+
+								sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
+								sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
+
+								assertEqualMarkup( getModelData( model ), modelTable( [
+									[ '00', '01', '02' ],
+									[ '10', text + '[ word word word]', '12' ],
+									[ '20', '21', '22' ]
+								] ) );
+							} );
+						} );
 					} );
 				}
 
