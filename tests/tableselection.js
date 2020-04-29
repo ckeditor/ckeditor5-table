@@ -831,6 +831,82 @@ describe( 'table selection', () => {
 		} );
 	} );
 
+	describe( 'the selection ranges order', () => {
+		let selection, table;
+
+		beforeEach( async () => {
+			editor = await createEditor();
+			model = editor.model;
+			selection = model.document.selection;
+			modelRoot = model.document.getRoot();
+			tableSelection = editor.plugins.get( TableSelection );
+
+			setModelData( model, modelTable( [
+				[ '00', '01', '02' ],
+				[ '10', '11', '12' ],
+				[ '20', '21', '22' ]
+			] ) );
+
+			table = modelRoot.getChild( 0 );
+		} );
+
+		it( 'should be to below right', () => {
+			const anchorCell = table.getChild( 1 ).getChild( 1 );
+			const focusCell = table.getChild( 2 ).getChild( 2 );
+
+			tableSelection._setCellSelection( anchorCell, focusCell );
+
+			assertSelection( anchorCell, focusCell, 4 );
+			expect( tableSelection._getFocusCell() ).to.equal( focusCell );
+			expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
+			expect( selection.isBackward ).to.be.false;
+		} );
+
+		it( 'should be to below left', () => {
+			const anchorCell = table.getChild( 1 ).getChild( 1 );
+			const focusCell = table.getChild( 2 ).getChild( 0 );
+
+			tableSelection._setCellSelection( anchorCell, focusCell );
+
+			assertSelection( anchorCell, focusCell, 4 );
+			expect( tableSelection._getFocusCell() ).to.equal( focusCell );
+			expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
+			expect( selection.isBackward ).to.be.true;
+		} );
+
+		it( 'should be to above left', () => {
+			const anchorCell = table.getChild( 1 ).getChild( 1 );
+			const focusCell = table.getChild( 0 ).getChild( 0 );
+
+			tableSelection._setCellSelection( anchorCell, focusCell );
+
+			assertSelection( anchorCell, focusCell, 4 );
+			expect( tableSelection._getFocusCell() ).to.equal( focusCell );
+			expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
+			expect( selection.isBackward ).to.be.true;
+		} );
+
+		it( 'should be to above right', () => {
+			const anchorCell = table.getChild( 1 ).getChild( 1 );
+			const focusCell = table.getChild( 0 ).getChild( 2 );
+
+			tableSelection._setCellSelection( anchorCell, focusCell );
+
+			assertSelection( anchorCell, focusCell, 4 );
+			expect( tableSelection._getFocusCell() ).to.equal( focusCell );
+			expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
+			expect( selection.isBackward ).to.be.true;
+		} );
+
+		function assertSelection( anchorCell, focusCell, count ) {
+			const cells = [ ...selection.getRanges() ].map( range => range.getContainedElement() );
+
+			expect( selection.rangeCount ).to.equal( count );
+			expect( cells[ 0 ] ).to.equal( anchorCell );
+			expect( cells[ cells.length - 1 ] ).to.equal( focusCell );
+		}
+	} );
+
 	function createEditor() {
 		return ClassicTestEditor.create( editorElement, {
 			plugins: [ TableEditing, TableSelection, Paragraph, Typing ]

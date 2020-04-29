@@ -453,22 +453,28 @@ export default class TableSelection extends Plugin {
 		const endColumn = Math.max( startLocation.column, endLocation.column );
 
 		const selectionMap = new Array( endRow - startRow + 1 ).fill( null ).map( () => [] );
-		const flipVertically = endLocation.row < startLocation.row;
-		const flipHorizontally = endLocation.column < startLocation.column;
 
 		for ( const cellInfo of new TableWalker( findAncestor( 'table', anchorCell ), { startRow, endRow } ) ) {
 			if ( cellInfo.column >= startColumn && cellInfo.column <= endColumn ) {
-				const row = flipVertically ? selectionMap.length - cellInfo.row - 1 + startRow : cellInfo.row - startRow;
-
-				if ( flipHorizontally ) {
-					selectionMap[ row ].unshift( cellInfo.cell );
-				} else {
-					selectionMap[ row ].push( cellInfo.cell );
-				}
+				selectionMap[ cellInfo.row - startRow ].push( cellInfo.cell );
 			}
 		}
 
-		return { cells: selectionMap.flat(), backward: flipVertically || flipHorizontally };
+		const flipVertically = endLocation.row < startLocation.row;
+		const flipHorizontally = endLocation.column < startLocation.column;
+
+		if ( flipVertically ) {
+			selectionMap.reverse();
+		}
+
+		if ( flipHorizontally ) {
+			selectionMap.forEach( row => row.reverse() );
+		}
+
+		return {
+			cells: selectionMap.flat(),
+			backward: flipVertically || flipHorizontally
+		};
 	}
 }
 
