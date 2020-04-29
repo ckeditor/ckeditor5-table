@@ -1,6 +1,7 @@
 ### Table mocking tools
 
-Helper tools for preparing test cases like this: 
+Helper tools for preparing test cases like this:
+ 
 ```javascript
 // +----+----+----+----+----+
 // | 00 | 01 | 02 | 03 | 04 |
