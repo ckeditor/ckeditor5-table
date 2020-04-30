@@ -15,7 +15,6 @@ import { getSelectedTableCells, getTableCellsContainingSelection } from './utils
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import Rect from '@ckeditor/ckeditor5-utils/src/dom/rect';
 import priorities from '@ckeditor/ckeditor5-utils/src/priorities';
-import Selection from '@ckeditor/ckeditor5-engine/src/model/selection';
 import { keyCodes } from '@ckeditor/ckeditor5-utils/src/keyboard';
 
 /**
@@ -265,7 +264,7 @@ export default class TableNavigation extends Plugin {
 				const newPosition = isForward ? cellRange.end : cellRange.start;
 
 				if ( expandSelection ) {
-					const newSelection = new Selection( selection.anchor );
+					const newSelection = model.createSelection( selection.anchor );
 					newSelection.setFocus( newPosition );
 
 					writer.setSelection( newSelection );
