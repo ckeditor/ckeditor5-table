@@ -831,6 +831,44 @@ describe( 'table selection', () => {
 		} );
 	} );
 
+	describe( 'getAnchorCell() and getFocusCell()', () => {
+		beforeEach( async () => {
+			editor = await createEditor();
+			model = editor.model;
+			modelRoot = model.document.getRoot();
+			tableSelection = editor.plugins.get( TableSelection );
+
+			setModelData( model, modelTable( [
+				[ '[]00', '01', '02' ],
+				[ '10', '11', '12' ],
+				[ '20', '21', '22' ]
+			] ) );
+		} );
+
+		it( 'should not return element if the table cell is not selected', () => {
+			expect( tableSelection.getAnchorCell() ).to.be.null;
+			expect( tableSelection.getFocusCell() ).to.be.null;
+		} );
+
+		it( 'getAnchorCell() should return the table cell from the first range in the selection', () => {
+			const anchorCell = modelRoot.getNodeByPath( [ 0, 0, 0 ] );
+			const focusCell = modelRoot.getNodeByPath( [ 0, 1, 1 ] );
+
+			tableSelection.setCellSelection( anchorCell, focusCell );
+
+			expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+		} );
+
+		it( 'getFocusCell() should return the table cell from the last range in the selection', () => {
+			const anchorCell = modelRoot.getNodeByPath( [ 0, 0, 0 ] );
+			const focusCell = modelRoot.getNodeByPath( [ 0, 1, 1 ] );
+
+			tableSelection.setCellSelection( anchorCell, focusCell );
+
+			expect( tableSelection.getFocusCell() ).to.equal( focusCell );
+		} );
+	} );
+
 	describe( 'the selection ranges order', () => {
 		let selection, table;
 

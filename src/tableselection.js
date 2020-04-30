@@ -390,8 +390,13 @@ export default class TableSelection extends Plugin {
 	getFocusCell() {
 		const selection = this.editor.model.document.selection;
 		const focusCellRange = [ ...selection.getRanges() ].pop();
+		const element = focusCellRange.getContainedElement();
 
-		return focusCellRange.getContainedElement();
+		if ( element && element.is( 'tableCell' ) ) {
+			return element;
+		}
+
+		return null;
 	}
 
 	/**
@@ -402,8 +407,13 @@ export default class TableSelection extends Plugin {
 	getAnchorCell() {
 		const selection = this.editor.model.document.selection;
 		const anchorCellRange = first( selection.getRanges() );
+		const element = anchorCellRange.getContainedElement();
 
-		return anchorCellRange.getContainedElement();
+		if ( element && element.is( 'tableCell' ) ) {
+			return element;
+		}
+
+		return null;
 	}
 
 	/**
