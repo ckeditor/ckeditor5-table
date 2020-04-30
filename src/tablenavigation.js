@@ -200,8 +200,8 @@ export default class TableNavigation extends Plugin {
 		if ( selectedCells.length ) {
 			if ( expandSelection ) {
 				const tableSelection = this.editor.plugins.get( 'TableSelection' );
-				const focusCell = tableSelection._getFocusCell();
-				const anchorCell = tableSelection._getAnchorCell();
+				const focusCell = tableSelection.getFocusCell();
+				const anchorCell = tableSelection.getAnchorCell();
 
 				this._navigateFromCellInDirection( anchorCell, focusCell, direction, expandSelection );
 			} else {
@@ -507,7 +507,7 @@ export default class TableNavigation extends Plugin {
 		if ( expandSelection ) {
 			const tableSelection = this.editor.plugins.get( 'TableSelection' );
 
-			tableSelection._setCellSelection( anchorCell, cellToSelect );
+			tableSelection.setCellSelection( anchorCell, cellToSelect );
 		} else {
 			const positionToSelect = model.createPositionAt( cellToSelect, isForward ? 0 : 'end' );
 

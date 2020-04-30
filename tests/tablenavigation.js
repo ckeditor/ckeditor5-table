@@ -1035,16 +1035,16 @@ describe( 'TableNavigation', () => {
 					it( 'should expand the selection to the cell on the right when the direction is "right"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'right', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell below when the direction is "down"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'down', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
@@ -1079,16 +1079,16 @@ describe( 'TableNavigation', () => {
 					it( 'should expand the selection to the cell on the left when the direction is "left"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'left', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell above when the direction is "up"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'up', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
@@ -1123,32 +1123,32 @@ describe( 'TableNavigation', () => {
 					it( 'should expand the selection to the cell on the right when the direction is "right"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'right', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell above when the direction is "up"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'up', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell below when the direction is "down"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'down', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell above when the direction is "left"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'left', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 				} );
@@ -1163,32 +1163,32 @@ describe( 'TableNavigation', () => {
 					it( 'should expand the selection to the cell on the left when the direction is "left"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'left', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell above when the direction is "up"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'up', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell below when the direction is "down"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'down', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
 					it( 'should expand the selection to the cell below when the direction is "right"', () => {
 						tableNavigation._navigateFromCellInDirection( tableCell, tableCell, 'right', true );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( tableCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( tableCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 				} );
@@ -1208,7 +1208,7 @@ describe( 'TableNavigation', () => {
 
 					anchorCell = focusCell = modelRoot.getNodeByPath( [ 0, 1, 1 ] );
 
-					tableSelection._setCellSelection( anchorCell, focusCell );
+					tableSelection.setCellSelection( anchorCell, focusCell );
 				} );
 
 				describe( 'without shift pressed', () => {
@@ -1279,8 +1279,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
@@ -1290,8 +1290,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
@@ -1301,8 +1301,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 
@@ -1312,8 +1312,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 2 );
 					} );
 				} );
@@ -1333,7 +1333,7 @@ describe( 'TableNavigation', () => {
 					anchorCell = modelRoot.getNodeByPath( [ 0, 1, 1 ] );
 					focusCell = modelRoot.getNodeByPath( [ 0, 2, 1 ] );
 
-					tableSelection._setCellSelection( anchorCell, focusCell );
+					tableSelection.setCellSelection( anchorCell, focusCell );
 				} );
 
 				describe( 'without shift pressed', () => {
@@ -1408,8 +1408,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 4 );
 					} );
 
@@ -1419,8 +1419,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 4 );
 					} );
 
@@ -1430,8 +1430,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( anchorCell );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( anchorCell );
 						expect( selection.rangeCount ).to.equal( 1 );
 					} );
 
@@ -1441,8 +1441,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 3, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 3, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 3 );
 					} );
 				} );
@@ -1462,7 +1462,7 @@ describe( 'TableNavigation', () => {
 					anchorCell = modelRoot.getNodeByPath( [ 0, 2, 1 ] );
 					focusCell = modelRoot.getNodeByPath( [ 0, 1, 1 ] );
 
-					tableSelection._setCellSelection( anchorCell, focusCell );
+					tableSelection.setCellSelection( anchorCell, focusCell );
 				} );
 
 				describe( 'without shift pressed', () => {
@@ -1537,8 +1537,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 0 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 0 ] ) );
 						expect( selection.rangeCount ).to.equal( 4 );
 					} );
 
@@ -1548,8 +1548,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 4 );
 					} );
 
@@ -1559,8 +1559,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( anchorCell );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( anchorCell );
 						expect( selection.rangeCount ).to.equal( 1 );
 					} );
 
@@ -1570,8 +1570,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 1 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 1 ] ) );
 						expect( selection.rangeCount ).to.equal( 3 );
 					} );
 				} );
@@ -1591,7 +1591,7 @@ describe( 'TableNavigation', () => {
 					anchorCell = modelRoot.getNodeByPath( [ 0, 1, 1 ] );
 					focusCell = modelRoot.getNodeByPath( [ 0, 1, 2 ] );
 
-					tableSelection._setCellSelection( anchorCell, focusCell );
+					tableSelection.setCellSelection( anchorCell, focusCell );
 				} );
 
 				describe( 'without shift pressed', () => {
@@ -1666,8 +1666,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( upArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 0, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 4 );
 					} );
 
@@ -1677,8 +1677,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( downArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 2, 2 ] ) );
 						expect( selection.rangeCount ).to.equal( 4 );
 					} );
 
@@ -1688,8 +1688,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( leftArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( anchorCell );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( anchorCell );
 						expect( selection.rangeCount ).to.equal( 1 );
 					} );
 
@@ -1699,8 +1699,8 @@ describe( 'TableNavigation', () => {
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.preventDefault );
 						sinon.assert.calledOnce( rightArrowDomEvtDataStub.stopPropagation );
 
-						expect( tableSelection._getAnchorCell() ).to.equal( anchorCell );
-						expect( tableSelection._getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 3 ] ) );
+						expect( tableSelection.getAnchorCell() ).to.equal( anchorCell );
+						expect( tableSelection.getFocusCell() ).to.equal( modelRoot.getNodeByPath( [ 0, 1, 3 ] ) );
 						expect( selection.rangeCount ).to.equal( 3 );
 					} );
 				} );
@@ -1715,7 +1715,7 @@ describe( 'TableNavigation', () => {
 						[ '30', '31', '32', '33' ]
 					] ) );
 
-					tableSelection._setCellSelection(
+					tableSelection.setCellSelection(
 						modelRoot.getNodeByPath( [ 0, 1, 1 ] ),
 						modelRoot.getNodeByPath( [ 0, 2, 2 ] )
 					);
@@ -2732,7 +2732,7 @@ describe( 'TableNavigation', () => {
 						[ '20', '21', '22' ]
 					] ) );
 
-					tableSelection._setCellSelection(
+					tableSelection.setCellSelection(
 						modelRoot.getNodeByPath( [ 0, 1, 1 ] ),
 						modelRoot.getNodeByPath( [ 0, 1, 1 ] )
 					);

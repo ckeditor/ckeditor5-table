@@ -182,7 +182,7 @@ export default class TableSelection extends Plugin {
 
 			if ( targetCell && haveSameTableParent( anchorCell, targetCell ) ) {
 				blockSelectionChange = true;
-				this._setCellSelection( anchorCell, targetCell );
+				this.setCellSelection( anchorCell, targetCell );
 
 				domEventData.preventDefault();
 			}
@@ -273,7 +273,7 @@ export default class TableSelection extends Plugin {
 			}
 
 			blockSelectionChange = true;
-			this._setCellSelection( anchorCell, targetCell );
+			this.setCellSelection( anchorCell, targetCell );
 
 			domEventData.preventDefault();
 		} );
@@ -368,11 +368,10 @@ export default class TableSelection extends Plugin {
 	 * Sets the model selection based on given anchor and target cells (can be the same cell).
 	 * Takes care of setting the backward flag.
 	 *
-	 * @protected
 	 * @param {module:engine/model/element~Element} anchorCell
 	 * @param {module:engine/model/element~Element} targetCell
 	 */
-	_setCellSelection( anchorCell, targetCell ) {
+	setCellSelection( anchorCell, targetCell ) {
 		const cellsToSelect = this._getCellsToSelect( anchorCell, targetCell );
 
 		this.editor.model.change( writer => {
@@ -386,10 +385,9 @@ export default class TableSelection extends Plugin {
 	/**
 	 * Returns the focus cell from the current selection.
 	 *
-	 * @protected
 	 * @returns {module:engine/model/element~Element}
 	 */
-	_getFocusCell() {
+	getFocusCell() {
 		const selection = this.editor.model.document.selection;
 		const focusCellRange = [ ...selection.getRanges() ].pop();
 
@@ -399,10 +397,9 @@ export default class TableSelection extends Plugin {
 	/**
 	 * Returns the anchor cell from the current selection.
 	 *
-	 * @protected
 	 * @returns {module:engine/model/element~Element} anchorCell
 	 */
-	_getAnchorCell() {
+	getAnchorCell() {
 		const selection = this.editor.model.document.selection;
 		const anchorCellRange = first( selection.getRanges() );
 
