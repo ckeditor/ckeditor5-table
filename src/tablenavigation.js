@@ -204,9 +204,9 @@ export default class TableNavigation extends Plugin {
 
 				this._navigateFromCellInDirection( anchorCell, focusCell, direction, expandSelection );
 			} else {
-				const focusCell = isForward ? selectedCells[ selectedCells.length - 1 ] : selectedCells[ 0 ];
+				const tableCell = isForward ? selectedCells[ selectedCells.length - 1 ] : selectedCells[ 0 ];
 
-				this._navigateFromCellInDirection( focusCell, focusCell, direction, expandSelection );
+				this._navigateFromCellInDirection( tableCell, tableCell, direction, expandSelection );
 			}
 
 			return true;
