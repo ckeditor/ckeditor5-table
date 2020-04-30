@@ -8,6 +8,7 @@ import Table from '../src/table';
 import TableEditing from '../src/tableediting';
 import TableSelection from '../src/tableselection';
 import { modelTable } from './_utils/utils';
+import { getTableCellsContainingSelection } from '../src/utils';
 
 import VirtualTestEditor from '@ckeditor/ckeditor5-core/tests/_utils/virtualtesteditor';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
@@ -1019,7 +1020,7 @@ describe( 'TableNavigation', () => {
 			describe( 'when expanding selection', () => {
 				beforeEach( () => {
 					setModelData( model, modelTable( [
-						[ '00', '01', '02' ],
+						[ '00[]', '01', '02' ],
 						[ '10', '11', '12' ],
 						[ '20', '21', '22' ]
 					] ) );
@@ -1029,8 +1030,7 @@ describe( 'TableNavigation', () => {
 					let tableCell;
 
 					beforeEach( () => {
-						tableCell = modelRoot.getNodeByPath( [ 0, 0, 0 ] );
-						tableSelection.setCellSelection( tableCell, tableCell );
+						tableCell = getTableCellsContainingSelection( selection )[ 0 ];
 					} );
 
 					it( 'should expand the selection to the cell on the right when the direction is "right"', () => {
