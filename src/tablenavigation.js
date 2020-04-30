@@ -444,7 +444,7 @@ export default class TableNavigation extends Plugin {
 	/**
 	 * Moves the selection from the given table cell in the specified direction.
 	 *
-	 * @private
+	 * @protected
 	 * @param {module:engine/model/element~Element} anchorCell The table cell that is current multi-cell selection anchor.
 	 * @param {module:engine/model/element~Element} focusCell The table cell that is current multi-cell selection focus.
 	 * @param {'left'|'up'|'right'|'down'} direction Direction in which selection should move.
