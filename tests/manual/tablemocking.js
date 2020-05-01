@@ -94,7 +94,7 @@ ClassicEditor
 
 			const jsonString = string
 				.replace( /'/g, '"' )
-				.replace( /(?!")([a-z0-9$_]+)(?!")\s*:/gi, '"$1"' );
+				.replace( /([a-z0-9$_]+)\s*:/gi, '"$1":' );
 
 			try {
 				return JSON.parse( jsonString );
